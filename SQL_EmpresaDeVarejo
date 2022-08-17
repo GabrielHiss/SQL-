@@ -1,0 +1,48 @@
+1- A equipe de marketing precisa fazer uma pesquisa sobre os nomes mais comuns de seus clientes e precisa do nome e sobrenome de todos os clientes cadastrados no sistema.
+
+SELECT DISTINCT Firstname, Lastname
+FROM person.person
+
+2 - A equipe de produção precisa do nome de todas as peças que pesam mais de 500 kg mas não mais que 700 kg para inspeção.
+
+SELECT *
+FROM Production.product
+Where weight> 500 and weight< 700
+
+3- A equipe de vendas quer obter o ProductID dos 10 produtos mais caros do sistema, listando do mais caro para o mais barato.
+
+SELECT top 10 productID, Name, listprice
+FROM Production.product
+ORDER BY ListPrice desc
+
+4- O time de vendas quer saber quantos tamanhos diferentes de produtos temos cadastrados na tabela de produtos.
+
+SELECT Count (Distinct size)
+FROM Production.product
+
+5- O time de vendas diz ser necessário saber quantos produtos e qual é a quantidade média de produtos se tem cadastrados nas ordens de serviço (Workorder) da empresa, agrupados por ProductID.
+
+SELECT ProductID , count (ProductID) as quantidade_estoque , avg (OrderQty) as media_cadastros
+FROM Production.workorder
+GROUP BY ProductID
+
+6- Sendo que se trata de uma multinacional, os gerentes querem saber quais produtos não estão trazendo em média no mínimo 1 milhão em total de vendas.
+
+SELECT ProductID, avg(linetotal) as media
+FROM Sales.SalesOrderDetail
+GROUP BY productID
+HAVING avg(LineTotal)<1000000
+
+7- A empresa precisa de um tabela que contenha o código do cliente (BusinessEntityID),o tipo de telefone (Name), o número (Phonenumber) e o ID do número (PhonenumbertypeID).
+
+SELECT a.phonenumbertypeID, a.name, b.BusinessEntityID, b.PhoneNumber
+From Person.PhoneNumberType a
+INNER JOIN person.PersonPhone b
+on a.PhoneNumberTypeID = b.PhoneNumberTypeID
+
+8- A área de vendas quer saber qual a média de valor de pagamento mensal dos produtos.
+
+SELECT avg(totaldue) as media_de_vendas, datepart(month, orderdate) as mês
+FROM sales.SalesOrderHeader
+GROUP BY datepart(month, orderdate)
+ORDER BY mês
